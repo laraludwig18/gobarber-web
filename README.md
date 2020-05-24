@@ -17,3 +17,8 @@ Rodar projeto:
 ```
 yarn start
 ```
+
+## TODO
+
+- [ ] Adicionar loader no botão
+- [ ] Criar estado global de loading usando context api

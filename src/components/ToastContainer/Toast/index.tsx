@@ -33,9 +33,10 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
     };
   }, [removeToast, message.id]);
 
+  // hasDescription must be a number because DOM does not recognize boolean type
   return (
     <Container
-      hasDescription={!!message?.description}
+      hasDescription={Number(!!message?.description)}
       type={message.type}
       style={style}
     >

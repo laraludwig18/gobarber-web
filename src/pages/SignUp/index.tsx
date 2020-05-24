@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
           name: string().required('Nome obrigatório'),
           email: string()
             .required('Email obrigatório')
-            .email('Digita um email válido'),
+            .email('Digite um email válido'),
           password: string().min(6, 'No mínimo 6 dígitos'),
         });
 
