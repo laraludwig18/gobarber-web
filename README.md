@@ -1,6 +1,6 @@
 # GoBarber
 
-Aplicação web para agendamentos de serviços de barbearia
+Aplicação web onde os prestadores de serviço poderão consultar sua agenda e disponibilidade de horário
 
 ## Telas
 
@@ -22,3 +22,5 @@ yarn start
 
 - [ ] Adicionar loader no botão
 - [ ] Criar estado global de loading usando context api
+- [ ] Adicionar tratamento caso usuário não tenha avatar
+- [ ] Separar tipagens que estejam duplicadas
