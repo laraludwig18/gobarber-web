@@ -1,6 +1,6 @@
 # GoBarber
 
-Aplicação web onde os prestadores de serviço poderão consultar sua agenda e disponibilidade de horário
+Aplicação web onde os prestadores de serviço poderão consultar sua agenda e disponibilidade de horário, além de alterar seu perfil
 
 ## Telas
 
