@@ -5,8 +5,8 @@ import { FormHandles } from '@unform/core';
 import { object, string, ValidationError } from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
-import { useToast } from '../../hooks/toast';
-import api from '../../services/apiClient';
+import { useToast } from '../../context/toast';
+import { useApiClient } from '../../services/apiClient';
 import getValidationErrors from '../../utils/getValidationErrors';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -23,8 +23,8 @@ interface SignUpFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  const api = useApiClient();
   const { addToast } = useToast();
-
   const history = useHistory();
 
   const handleSubmit = useCallback(
@@ -68,7 +68,7 @@ const SignIn: React.FC = () => {
         });
       }
     },
-    [addToast, history],
+    [addToast, api, history],
   );
 
   return (

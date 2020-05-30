@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import api from '../services/apiClient';
+import { useApiClient } from '../services/apiClient';
 
 interface User {
   id: string;
@@ -27,6 +27,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: User;
+  token: string;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   updateUser(user: User): void;
@@ -35,6 +36,8 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const api = useApiClient();
+
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
@@ -48,11 +51,9 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (data.token) {
-      api.defaults.headers.Authorization = `Bearer ${data.token}`;
       return localStorage.setItem('@GoBarber:token', data.token);
     }
 
-    api.defaults.headers.Authorization = null;
     return localStorage.removeItem('@GoBarber:token');
   }, [data.token]);
 
@@ -64,13 +65,16 @@ export const AuthProvider: React.FC = ({ children }) => {
     return localStorage.removeItem('@GoBarber:user');
   }, [data.user]);
 
-  const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const response = await api.post('sessions', { email, password });
+  const signIn = useCallback(
+    async ({ email, password }: SignInCredentials) => {
+      const response = await api.post('sessions', { email, password });
 
-    const { token, user } = response.data;
+      const { token, user } = response.data;
 
-    setData({ token, user });
-  }, []);
+      setData({ token, user });
+    },
+    [api],
+  );
 
   const signOut = useCallback(() => {
     setData({} as AuthState);
@@ -88,7 +92,13 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: data.user, signIn, signOut, updateUser }}
+      value={{
+        user: data.user,
+        token: data.token,
+        signIn,
+        signOut,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

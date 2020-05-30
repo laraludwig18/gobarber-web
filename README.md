@@ -20,8 +20,9 @@ yarn start
 
 ## TODO
 
+- [x] Deslogar usuário quando token expirar
 - [ ] Adicionar loader no botão
 - [ ] Criar estado global de loading usando context api
 - [ ] Adicionar tratamento caso usuário não tenha avatar
 - [ ] Separar tipagens que estejam duplicadas
-- [ ] Separar AvatarInput em outra pasta dentro de profile
+- [x] Separar AvatarInput em outra pasta dentro de profile

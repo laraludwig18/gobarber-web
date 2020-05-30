@@ -1,11 +1,18 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { DayModifiers } from 'react-day-picker';
-import { isWeekend, isToday, format, parseISO, isAfter } from 'date-fns';
+import {
+  isWeekend,
+  isToday,
+  format,
+  parseISO,
+  isAfter,
+  isSaturday,
+} from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { FiClock } from 'react-icons/fi';
 
-import api from '../../services/apiClient';
-import { useAuth } from '../../hooks/auth';
+import { useApiClient } from '../../services/apiClient';
+import { useAuth } from '../../context/auth';
 
 import Appointment from './Appointment';
 import Calendar from './Calendar';
@@ -35,13 +42,15 @@ interface MonthAvailabilityItem {
 }
 
 const Dashboard: React.FC = () => {
+  const api = useApiClient();
   const { user } = useAuth();
 
   const currentDate = useMemo(() => {
     const todayDate = new Date();
 
     if (isWeekend(todayDate)) {
-      todayDate.setDate(todayDate.getDate() + 1);
+      const addDays = isSaturday(todayDate) ? 2 : 1;
+      todayDate.setDate(todayDate.getDate() + addDays);
     }
 
     return todayDate;
@@ -117,6 +126,7 @@ const Dashboard: React.FC = () => {
     }
 
     getMonthAvailability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMonth, user.id]);
 
   useEffect(() => {
@@ -141,6 +151,7 @@ const Dashboard: React.FC = () => {
     }
 
     getAppointments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 
   const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {

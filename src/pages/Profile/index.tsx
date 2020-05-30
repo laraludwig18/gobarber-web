@@ -1,18 +1,19 @@
-import React, { useCallback, useRef, ChangeEvent } from 'react';
-import { FiMail, FiLock, FiUser, FiCamera, FiArrowLeft } from 'react-icons/fi';
+import React, { useCallback, useRef } from 'react';
+import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { object, string, ValidationError, ref } from 'yup';
 import { useHistory, Link } from 'react-router-dom';
 
-import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
-import api from '../../services/apiClient';
+import { useAuth } from '../../context/auth';
+import { useToast } from '../../context/toast';
+import { useApiClient } from '../../services/apiClient';
 import getValidationErrors from '../../utils/getValidationErrors';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import Avatar from './Avatar';
 
-import { AvatarInput, Container, Content } from './styles';
+import { Container, Content } from './styles';
 
 interface ProfileFormData {
   name: string;
@@ -25,11 +26,12 @@ interface ProfileFormData {
 const Profile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  const api = useApiClient();
   const { addToast } = useToast();
   const history = useHistory();
 
   const {
-    user: { name, avatarUrl, email },
+    user: { name, email },
     updateUser,
   } = useAuth();
 
@@ -95,23 +97,7 @@ const Profile: React.FC = () => {
         });
       }
     },
-    [addToast, history, updateUser],
-  );
-
-  const handleAvatarChange = useCallback(
-    async (e: ChangeEvent<HTMLInputElement>) => {
-      const formData = new FormData();
-
-      if (e.target.files) {
-        formData.append('avatar', e.target.files[0]);
-
-        const { data } = await api.patch('users/avatar', formData);
-        updateUser(data);
-
-        addToast({ type: 'success', title: 'Avatar atualizado!' });
-      }
-    },
-    [addToast, updateUser],
+    [addToast, api, history, updateUser],
   );
 
   return (
@@ -132,15 +118,7 @@ const Profile: React.FC = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <AvatarInput>
-            <img src={avatarUrl} alt={name} />
-            <label htmlFor="avatar">
-              <FiCamera />
-
-              <input type="file" id="avatar" onChange={handleAvatarChange} />
-            </label>
-          </AvatarInput>
-
+          <Avatar />
           <h1>Meu perfil</h1>
 
           <Input name="name" placeholder="Digite seu nome" icon={FiUser} />

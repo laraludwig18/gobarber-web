@@ -5,8 +5,8 @@ import { FormHandles } from '@unform/core';
 import { object, string, ValidationError, ref } from 'yup';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import api from '../../services/apiClient';
-import { useToast } from '../../hooks/toast';
+import { useApiClient } from '../../services/apiClient';
+import { useToast } from '../../context/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -24,6 +24,7 @@ const ResetPassword: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const api = useApiClient();
   const { addToast } = useToast();
   const history = useHistory();
   const location = useLocation();
@@ -82,7 +83,7 @@ const ResetPassword: React.FC = () => {
         setLoading(false);
       }
     },
-    [addToast, getToken, history],
+    [addToast, api, getToken, history],
   );
 
   return (
