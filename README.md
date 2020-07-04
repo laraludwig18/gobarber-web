@@ -3,6 +3,8 @@
 Aplicação web onde os prestadores de serviço poderão consultar sua agenda e disponibilidade de horário, além de alterar seu perfil
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/8c215123-5b28-4768-b407-c972b9301b87/deploy-status)](https://go-barber-web.netlify.app/)
+![CI](https://github.com/laraludwig18/gobarber-web/workflows/CI/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/laraludwig18/gobarber-web/badge.svg?branch=master)](https://coveralls.io/github/laraludwig18/gobarber-web?branch=master)
 
 ## Telas
 
